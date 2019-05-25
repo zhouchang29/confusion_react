@@ -1,9 +1,8 @@
-import React, {Component} from 'react';
+import React from 'react';
 import { Card, CardImg, CardBody, CardText, CardTitle } from 'reactstrap';
 
-class DishDetail extends Component {
 	
-	renderDish(dish) {
+	function RenderDish({dish}) {
 		if (dish != null) {
 			return (
 				<React.Fragment>
@@ -18,8 +17,8 @@ class DishDetail extends Component {
 					</div> 
 					<div className="col-12 col-md-5 m-1">
 						<h4>Comments</h4>
-						{ this.renderComments(dish.comments) }
-					</div>
+						<RenderComments comments={dish.comments} />
+          </div>
 				</React.Fragment>
 			);
 		} else {
@@ -29,11 +28,19 @@ class DishDetail extends Component {
 		}
 	}
 
-	renderComments(comments) {
+	function RenderComments({comments}) {
 		if (comments && comments.length) {
 			return (
 				<ul className="list-unstyled">
-					{ comments.map((comment) => this.renderComment(comment)) }
+					{ comments.map((comment) => {
+            const commentDate = new Date(comment.date);
+            return (
+              <li key={comment.id}>
+                <p>{ comment.comment }</p>
+                <p>-- { comment.author }, { commentDate.toLocaleString('en-US', { month: 'short', day: '2-digit' }) } , { commentDate.getFullYear() }</p>
+              </li>
+            )
+          }) }
 				</ul>
 			);
 		} else {
@@ -43,25 +50,15 @@ class DishDetail extends Component {
 		}
 	}
 
-	renderComment(comment) {
-		const commentDate = new Date(comment.date);
-		return (
-			<li key={comment.id}>
-				<p>{ comment.comment }</p>
-				<p>-- { comment.author }, { commentDate.toLocaleString('en-US', { month: 'short', day: '2-digit' }) } , { commentDate.getFullYear() }</p>
-			</li>
-		)
-	}
-
-	render() {
+	const DishDetail = (props) => {
 		return (
 			<div className="container">
 				<div className="row">
-					{ this.renderDish(this.props.dish) }
+					<RenderDish dish={props.dish}/>
 				</div>
 			</div>
 		);
 	}
-}
+
 
 export default DishDetail;
