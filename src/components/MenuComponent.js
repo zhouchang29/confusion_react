@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { Media } from 'reactstrap';
 import { Card, CardImg, CardImgOverlay, CardBody, CardText, CardTitle } from 'reactstrap';
 
 
