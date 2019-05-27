@@ -40,12 +40,12 @@ class Contact extends React.Component {
 	
 	handleBlur = (field) => (evt) => {
 		this.setState({
-			touched: { ...this.state.touched, [field]: true }
+			touched: { ...this.state.touched, [field]: true },
 		});
-	}
+}
 
 	validate(firstname, lastname, telnum, email) {
-		const error = {
+		const errors = {
 			firstname: '',
 			lastname: '',
 			telnum: '',
