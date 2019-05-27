@@ -1,5 +1,5 @@
 import React from 'react';
-import { Breadcrumb, BreadcrumbItem, Button, Form, FormGroup, Label, Input, Col, Row, FormFeedback } from 'reactstrap';
+import { Breadcrumb, BreadcrumbItem, Button, Form, FormGroup, Label, Input, Col, FormFeedback } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 class Contact extends React.Component {
@@ -129,7 +129,7 @@ class Contact extends React.Component {
 								<Label htmlFor="firstname" md={2}>First Name</Label>
 								<Col md={10}>
 									<Input type="text" id="firstname" name="firstname" 
-									valid={errors.firstname === ''}
+									valid={errors.firstname === '' && this.state.touched.firstname}
 									invalid={errors.firstname !== ''}
 									placeholder="First Name" value={this.state.firstname} 
 									onChange={this.handleInputChange} onBlur={this.handleBlur('firstname')}/>
@@ -140,7 +140,7 @@ class Contact extends React.Component {
 								<Label htmlFor="lastname" md={2}>Last Name</Label>
 								<Col md={10}>
 									<Input type="text" id="lastname" name="lastname" 
-									valid={errors.lastname === ''}
+									valid={errors.lastname === '' && this.state.touched.lastname}
 									invalid={errors.lastname !== ''}
 									placeholder="Last Name" value={this.state.lastname} 
 									onChange={this.handleInputChange} onBlur={this.handleBlur('lastname')}/>
@@ -151,7 +151,7 @@ class Contact extends React.Component {
 								<Label htmlFor="telnum" md={2}>Contact Tel.</Label>
 								<Col md={10}>
 									<Input type="tel" id="telnum" name="telnum" 
-									valid={errors.telnum === ''}
+									valid={errors.telnum === '' && this.state.touched.telnum}
 									invalid={errors.telnum !== ''}
 									placeholder="Tel. Number" value={this.state.telnum} 
 									onChange={this.handleInputChange} onBlur={this.handleBlur('telnum')}/>
@@ -162,7 +162,7 @@ class Contact extends React.Component {
 								<Label htmlFor="email" md={2}>Email</Label>
 								<Col md={10}>
 									<Input type="email" id="email" name="email" 
-									valid={errors.email === ''}
+									valid={errors.email === '' && this.state.touched.email}
 									invalid={errors.email !== ''}
 									placeholder="Email" value={this.state.email} 
 									onChange={this.handleInputChange} onBlur={this.handleBlur('email')}/>
