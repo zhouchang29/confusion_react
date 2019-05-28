@@ -21,8 +21,14 @@ class CommentForm extends React.Component {
 	}
 
 	handleSubmit(values) {
-    console.log("Current State is: " + JSON.stringify(values));
-    alert("Current State is: " + JSON.stringify(values));
+		this.toggleModal();
+    this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+	}
+
+	toggleModal(){
+		this.setState({
+			isModalOpen: !this.state.isModalOpen
+		});
 	}
 
 	render(){
@@ -78,12 +84,6 @@ class CommentForm extends React.Component {
 			</React.Fragment>
 		);
 	};
-
-	toggleModal(){
-		this.setState({
-			isModalOpen: !this.state.isModalOpen
-		});
-	}
 }
 
 function RenderDish({dish}) {
@@ -108,10 +108,11 @@ function RenderDish({dish}) {
 	}
 }
 
-function RenderComments({comments}) {
+function RenderComments({comments, addComment, dishId}) {
 	if (comments && comments.length) {
 		return (
-			<React.Fragment>
+			<div className="col-12 col-md-5 m-1">
+				<h4>Comments</h4>
 				<ul className="list-unstyled">
 					{ comments.map((comment) => {
 						const commentDate = new Date(comment.date);
@@ -123,12 +124,17 @@ function RenderComments({comments}) {
 						)
 					}) }
 				</ul>
-				<CommentForm />
-			</React.Fragment>
+				<CommentForm dishId={dishId} addComment={addComment}/>
+			</div>
 		);
 	} else {
 		return (
-			<CommentForm />
+			<div>	
+				<div className="col-12 col-md-5 m-1">
+					<h4>Comments</h4>
+					<CommentForm dishId={dishId} addComment={addComment}/>
+				</div>
+			</div>
 		);
 	}
 }
@@ -148,10 +154,8 @@ const DishDetail = (props) => {
 			</div>
 			<div className="row">
 				<RenderDish dish={props.dish}/>
-				<div className="col-12 col-md-5 m-1">
-					<h4>Comments</h4>
-					<RenderComments comments={props.comments}/>
-				</div>
+				<RenderComments comments={props.comments} 
+				  addComment={props.addComment} dishId={props.dish.id}/>
 			</div>
 		</div>
 	);
