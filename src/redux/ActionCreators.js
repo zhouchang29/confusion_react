@@ -6,6 +6,37 @@ export const addComment = (comment) => ({
   payload: comment
 });
 
+export const postFeedback = (feedback) => (dispatch) => {
+
+  return fetch(baseUrl + 'feedback', {
+    method: 'POST',
+    body: JSON.stringify(feedback),
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'same-origin'
+  })
+  .then(response => {
+    if (response.ok) {
+      return response;
+    }
+    else {
+      var error = new Error('Error' + response.status + ': ' + response.statusText);
+      error.response = response;
+      throw error;
+    }
+  },
+  error => {
+    var errmess = new Error(error.message);
+    throw errmess;
+  })
+  .then(response => response.json())
+  .then(response => {alert("Thank you for your feedback! " + JSON.stringify(response));}
+  )
+  .catch(error => {console.log('Post feedback ', error.message);
+      alert('Your feedback could not be posted\n Error'+ error.message)});
+}
+
 export const postComment = (dishId, rating, author, comment) => (dispatch) => {
 
   const newComment = {
@@ -88,8 +119,44 @@ export const fetchComments = () => (dispatch) => {
   .catch(error => dispatch(commentsFailed(error.message)));
 }
 
+export const fetchLeaders = () => (dispatch) => {
+  dispatch(leadersLoading(true));
+  return fetch(baseUrl + 'leaders')
+  .then(response => {
+    if (response.ok) {
+      return response;
+    }
+    else {
+      var error = new Error('Error' + response.status + ': ' + response.statusText);
+      error.response = response;
+      throw error;
+    }
+  },
+  error => {
+    var errmess = new Error(error.message);
+    throw errmess;
+  })
+  .then(response => response.json())
+  .then(leaders => dispatch(addLeaders(leaders)))
+  .catch(error => dispatch(leadersFailed(error.message)));
+}
+
 export const dishesLoading = () => ({
   type: ActionTypes.DISHES_LOADING
+});
+
+export const leadersLoading = () => ({
+  type: ActionTypes.LEADERS_LOADING
+});
+
+export const addLeaders = (leaders) => ({
+  type: ActionTypes.ADD_LEADERS,
+  payload: leaders
+});
+
+export const leadersFailed = (errmess) => ({
+  type: ActionTypes.LEADERS_FAILED,
+  payload: errmess
 });
 
 export const dishesFailed = (errmess) => ({
@@ -101,6 +168,7 @@ export const addDishes = (dishes) => ({
   type: ActionTypes.ADD_DISHES,
   payload: dishes
 });
+
 
 export const commentsFailed = (errmess) => ({
   type: ActionTypes.COMMENTS_FAILED,
