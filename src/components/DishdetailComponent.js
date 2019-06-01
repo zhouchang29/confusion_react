@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => (val) && (val.length >= len);
@@ -93,6 +94,9 @@ function RenderDish({dish}) {
 		return (
 			<React.Fragment>
 				<div className="col-12 col-md-5 m-1">
+				<FadeTransform in transformProps={{
+				exitTransform: 'scale(0.5) translateY(-50%)'
+				}}>
 					<Card>
 						<CardImg top width="100%" src={baseUrl + dish.image} alt={dish.name} />
 						<CardBody>
@@ -100,6 +104,7 @@ function RenderDish({dish}) {
 							<CardText>{dish.description}</CardText>
 						</CardBody>
 					</Card>
+				</FadeTransform>
 				</div> 
 			</React.Fragment>
 		);
@@ -116,15 +121,19 @@ function RenderComments({comments, postComment, dishId}) {
 			<div className="col-12 col-md-5 m-1">
 				<h4>Comments</h4>
 				<ul className="list-unstyled">
+					<Stagger in>
 					{ comments.map((comment) => {
 						const commentDate = new Date(comment.date);
 						return (
+							<Fade in>
 							<li key={comment.id}>
 								<p>{ comment.comment }</p>
 								<p>-- { comment.author }, { commentDate.toLocaleString('en-US', { month: 'short', day: '2-digit' }) } , { commentDate.getFullYear() }</p>
 							</li>
+							</Fade>
 						)
 					}) }
+					</Stagger>
 				</ul>
 				<CommentForm dishId={dishId} postComment={postComment}/>
 			</div>
